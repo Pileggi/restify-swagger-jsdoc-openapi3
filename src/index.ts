@@ -40,6 +40,15 @@ export function createSwaggerPage(options: SwaggerPageOptions): void {
 
     const swaggerUiPath = path.dirname(require.resolve('swagger-ui-dist'));
 
+    let servers = undefined;
+    if ( typeof options.host === 'string' && Array.isArray(options.schemes) ) {
+        const host = options.host.replace(/\/+$/, '');
+        const basePath = typeof options.routePrefix === 'string' ? `/${options.routePrefix.replace(/^\/+/, '')}` : '/';
+        servers = options.schemes.map(scheme => ({
+            url: `${scheme}://${host}${basePath}`
+        }));
+    }
+
     const swaggerSpec = swaggerJSDoc({
         swaggerDefinition: {
             info: {
@@ -48,9 +57,7 @@ export function createSwaggerPage(options: SwaggerPageOptions): void {
                 description: typeof options.description === 'string' ? options.description : undefined
             },
             openapi: '3.0.0',
-            host: typeof options.host === 'string' ? options.host.replace(/\/+$/, '') : undefined,
-            basePath: typeof options.routePrefix === 'string' ? `/${options.routePrefix.replace(/^\/+/, '')}` : '/',
-            schemes: Array.isArray(options.schemes) ? options.schemes : undefined,
+            servers,
             tags: Array.isArray(options.tags) ? options.tags : []
         },
         apis: Array.isArray(options.apis) ? options.apis : []

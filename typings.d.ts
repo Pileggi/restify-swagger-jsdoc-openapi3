@@ -9,9 +9,7 @@ declare module 'swagger-jsdoc' {
 
         interface optionsDefinition {
             info: optionsDefinitionInfo;
-            host?: string;
-            basePath?: string;
-            schemes?: ('http' | 'https' | 'ws' | 'wss')[];
+            servers: optionsDefinitionServer[];
             tags?: {name: string, description: string}[];
             openapi?: string;
         }
@@ -20,6 +18,10 @@ declare module 'swagger-jsdoc' {
             title: string;
             version: string;
             description?: string;
+        }
+
+        interface optionsDefinitionServer {
+            url: string;
         }
     }
     function swaggerJSDoc(options: swaggerJSDoc.options): swaggerJSDoc.options;
