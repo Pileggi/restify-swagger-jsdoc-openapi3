@@ -220,7 +220,6 @@ describe('restify-swagger-jsdoc', () => {
             expect(sendStub.callCount).to.equal(1);
             expect(sendStub.lastCall.args[0]).to.deep.equal({
                 info: { title: options.title, version: options.version },
-                basePath: '/',
                 tags: [],
                 openapi: '3.0.0',
                 paths: {},
@@ -233,7 +232,7 @@ describe('restify-swagger-jsdoc', () => {
                 description: 'd',
                 host: 'h',
                 routePrefix: 'p',
-                schemes: [],
+                schemes: ['https'],
                 tags: [],
                 apis: [],
                 components: {foo: 'bar'}
@@ -251,9 +250,7 @@ describe('restify-swagger-jsdoc', () => {
             expect(sendStub.callCount).to.equal(1);
             expect(sendStub.lastCall.args[0]).to.deep.equal({
                 info: { title: options.title, version: options.version, description: 'd' },
-                host: 'h',
-                basePath: '/p',
-                schemes: [],
+                servers: [ { url: 'https://h/p' } ],
                 tags: [],
                 openapi: '3.0.0',
                 paths: {},
